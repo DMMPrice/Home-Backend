@@ -17,12 +17,7 @@ app = FastAPI(
 # Configure CORS
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=[
-        "http://localhost:5173",  # Vite dev server
-        "http://127.0.0.1:5173",  # Alternative localhost
-        "http://localhost:3000",  # React dev server
-        "http://127.0.0.1:3000",
-        "http://127.0.0.1:5174",
+    allow_origins=[       
         "*"  # Allow all origins for development
     ],
     allow_credentials=True,
@@ -66,7 +61,7 @@ async def server_error_handler(request, exc):
 if __name__ == "__main__":
     import os
     
-    port = int(os.environ.get("PORT", 8000))
+    port = int(os.environ.get("PORT", 6000))
     uvicorn.run(
         "app:app",
         host="0.0.0.0",
