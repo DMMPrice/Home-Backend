@@ -1,7 +1,7 @@
 APP_NAME="home_server"
 APP_MODULE="app:app"   # change "app:app" → (filename:Flask app variable)
 HOST="0.0.0.0"
-PORT=6000
+PORT=8000
 WORKERS=4
 
 # Activate venv if needed
