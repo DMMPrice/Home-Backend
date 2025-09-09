@@ -1,15 +1,18 @@
-APP_NAME="home_server"
-APP_MODULE="main:app"   # change "app:app" → (filename:Flask app variable)
+#!/bin/bash
+
+APP_NAME="home_backend"
+APP_MODULE="main:app"
 HOST="0.0.0.0"
 PORT=8000
 WORKERS=4
 
-# Activate venv if needed
+# Activate venv if you are using one
 # source venv/bin/activate
 
-# Run Flask with Gunicorn
+# Run with Gunicorn + Uvicorn workers
 exec gunicorn $APP_MODULE \
     --workers $WORKERS \
+    --worker-class uvicorn.workers.UvicornWorker \
     --bind $HOST:$PORT \
     --timeout 120 \
     --log-level info
