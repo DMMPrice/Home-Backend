@@ -62,7 +62,7 @@ async def server_error_handler(request, exc):
 if __name__ == "__main__":
     import os
     
-    port = int(os.environ.get("PORT", 6000))
+    port = int(os.environ.get("PORT", 8000))
     uvicorn.run(
         "app:app",
         host="0.0.0.0",

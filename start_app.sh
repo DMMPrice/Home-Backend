@@ -1,5 +1,5 @@
 APP_NAME="home_server"
-APP_MODULE="app:app"   # change "app:app" → (filename:Flask app variable)
+APP_MODULE="main:app"   # change "app:app" → (filename:Flask app variable)
 HOST="0.0.0.0"
 PORT=8000
 WORKERS=4
