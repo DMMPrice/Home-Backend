@@ -4,8 +4,8 @@ from fastapi.responses import JSONResponse
 import logging
 import uvicorn
 
-from routes.feature_extraction_routes import feature_bp
 from routes.user_routes import user_bp
+from routes.image import router as image_router
 
 # Initialize FastAPI app
 app = FastAPI(
@@ -29,8 +29,9 @@ app.add_middleware(
 logging.basicConfig(level=logging.INFO)
 
 # Include routers (FastAPI equivalent of Flask blueprints)
-app.include_router(feature_bp)
-app.include_router(user_bp)
+
+app.include_router(user_bp,prefix="/users", tags=["User Management"])
+app.include_router(image_router, prefix="/image", tags=["Image Recognition"])
 
 
 @app.get("/")

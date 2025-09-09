@@ -5,7 +5,7 @@ from models.users import User
 from models.operation_logger import OperationLogger
 from typing import Optional
 
-user_bp = APIRouter(prefix="/users", tags=["Users"])
+user_bp = APIRouter()
 
 # Pydantic models
 class UserRegistration(BaseModel):
