@@ -4,7 +4,7 @@ pipeline {
     environment {
         IMAGE_NAME = "dmmprice/home_backend"
         CONTAINER_NAME = "home_backend"
-        PORT = "6001"
+        PORT = "6000"
     }
 
     stages {
