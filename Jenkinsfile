@@ -11,7 +11,7 @@ pipeline {
 
         stage('Clone Repository') {
             steps {
-                git branch: 'main', url: 'https://github.com/DMMPrice/home_backend.git'
+                git branch: 'main', url: 'https://github.com/DMMPrice/Home-Backend.git'
             }
         }
 
