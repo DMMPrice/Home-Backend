@@ -15,14 +15,6 @@ pipeline {
             }
         }
 
-        stage('Load ENV File') {
-            steps {
-                withCredentials([file(credentialsId: 'home-backend-env', variable: 'ENV_FILE')]) {
-                    sh 'cp $ENV_FILE .env'
-                }
-            }
-        }
-
         stage('Build Docker Image') {
             steps {
                 sh """
@@ -34,9 +26,9 @@ pipeline {
         stage('Docker Login') {
             steps {
                 withCredentials([usernamePassword(credentialsId: 'dockerhub-dmmprice', usernameVariable: 'DOCKER_USER', passwordVariable: 'DOCKER_PASS')]) {
-                    sh """
+                    sh '''
                     echo "$DOCKER_PASS" | docker login -u "$DOCKER_USER" --password-stdin
-                    """
+                    '''
                 }
             }
         }
@@ -51,23 +43,26 @@ pipeline {
 
         stage('Deploy on VPS') {
             steps {
-                sh """
-                echo "Pulling latest image on VPS..."
-                docker pull ${IMAGE_NAME}:latest
+                // use the secret file directly as --env-file
+                withCredentials([file(credentialsId: 'home-backend-env', variable: 'ENV_FILE')]) {
+                    sh """
+                    echo "Pulling latest image on VPS..."
+                    docker pull ${IMAGE_NAME}:latest
 
-                echo "Stopping old container if exists..."
-                docker stop ${CONTAINER_NAME} || true
-                docker rm ${CONTAINER_NAME} || true
+                    echo "Stopping old container if exists..."
+                    docker stop ${CONTAINER_NAME} || true
+                    docker rm ${CONTAINER_NAME} || true
 
-                echo "Starting new container..."
-                docker run -d --name ${CONTAINER_NAME} \
-                    --env-file .env \
-                    -p ${PORT}:8000 \
-                    --restart always \
-                    ${IMAGE_NAME}:latest
+                    echo "Starting new container..."
+                    docker run -d --name ${CONTAINER_NAME} \
+                        --env-file "$ENV_FILE" \
+                        -p ${PORT}:8000 \
+                        --restart always \
+                        ${IMAGE_NAME}:latest
 
-                echo "Deployment completed on port ${PORT}"
-                """
+                    echo "Deployment completed on port ${PORT}"
+                    """
+                }
             }
         }
     }
